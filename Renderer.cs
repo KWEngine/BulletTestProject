@@ -10,10 +10,10 @@ namespace BulletTest
 {
     class Renderer
     {
-        private static int _modelViewProjection = -1;
         private static int _programId = -1;
         private static int _uniformMVP = -1;
         private static int _uniformNormalMatrix = -1;
+        private static int _uniformModelMatrix = -1;
 
         public static void Init()
         {
@@ -21,8 +21,8 @@ namespace BulletTest
             int svert = -1;
             int sfrag = -1;
 
-            string resourceNameFragmentShader = "BulletTest.Shaders.renderer.vert";
-            string resourceNameVertexShader = "BulletTest.Shaders.renderer.frag";
+            string resourceNameVertexShader = "BulletTest.Shaders.renderer.vert";
+            string resourceNameFragmentShader = "BulletTest.Shaders.renderer.frag";
             Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream s = assembly.GetManifestResourceStream(resourceNameVertexShader))
             {
@@ -46,6 +46,7 @@ namespace BulletTest
             }
 
             _uniformMVP = GL.GetUniformLocation(_programId, "uMVP");
+            _uniformModelMatrix = GL.GetUniformLocation(_programId, "uModelMatrix");
             _uniformNormalMatrix = GL.GetUniformLocation(_programId, "uNormalMatrix");
 
             GL.UseProgram(_programId);
@@ -56,7 +57,8 @@ namespace BulletTest
             int address = GL.CreateShader(pType);
             using (StreamReader sr = new StreamReader(pFileStream))
             {
-                GL.ShaderSource(address, sr.ReadToEnd());
+                string source = sr.ReadToEnd();
+                GL.ShaderSource(address, source);
             }
             GL.CompileShader(address);
             GL.AttachShader(pProgram, address);
@@ -67,6 +69,7 @@ namespace BulletTest
         {
             Matrix4 mvp = g.ModelMatrix * viewProjection;
             GL.UniformMatrix4(_uniformMVP, false, ref mvp);
+            GL.UniformMatrix4(_uniformModelMatrix, false, ref g.ModelMatrix);
             GL.UniformMatrix4(_uniformNormalMatrix, false, ref g.NormalMatrix);
 
             GL.BindVertexArray(PrimitiveCube.VAO);

@@ -8,23 +8,23 @@ namespace BulletTest
     class GameObject
     {
         public Matrix4 ModelMatrix = Matrix4.Identity;
-        private Vector3 _position = Vector3.Zero;
+        private Vector3 Position = Vector3.Zero;
         public Quaternion Rotation = Quaternion.Identity;
         public Vector3 Scale = new Vector3(1, 1, 1);
         public Matrix4 NormalMatrix = Matrix4.Identity;
         
         public void SetPosition(float x, float y, float z)
         {
-            _position.X = x;
-            _position.Y = y;
-            _position.Z = z;
+            Position.X = x;
+            Position.Y = y;
+            Position.Z = z;
 
             UpdateModelMatrix();
         }
 
         private void UpdateModelMatrix()
         {
-            CreateModelMatrix(ref _position, ref Rotation, ref Scale, out ModelMatrix);
+            CreateModelMatrix(ref Scale, ref Rotation, ref Position, out ModelMatrix);
             NormalMatrix = Matrix4.Invert(Matrix4.Transpose(ModelMatrix));
         }
 
