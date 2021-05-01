@@ -42,18 +42,22 @@ namespace BulletTest
 
             GameObject cube1 = new GameObject();
             cube1.SetPosition(5, 5, 5);
+            cube1.Color = new Vector3(1, 0, 0);
             _world.Add(cube1);
 
             GameObject cube2 = new GameObject();
             cube2.SetPosition(5, 5, 0);
+            cube2.Color = new Vector3(0, 1, 0);
             _world.Add(cube2);
 
             GameObject cube3 = new GameObject();
             cube3.SetPosition(0, 0.5f, 5);
+            cube3.Color = new Vector3(0, 0, 1);
             _world.Add(cube3);
 
             GameObject floor = new GameObject();
             floor.SetPosition(0, -0.5f, 0);
+            floor.SetScale(50, 1, 50);
             _world.Add(floor);
         }
 

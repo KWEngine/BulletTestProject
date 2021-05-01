@@ -14,6 +14,7 @@ namespace BulletTest
         private static int _uniformMVP = -1;
         private static int _uniformNormalMatrix = -1;
         private static int _uniformModelMatrix = -1;
+        private static int _uniformColor = -1;
 
         public static void Init()
         {
@@ -48,6 +49,7 @@ namespace BulletTest
             _uniformMVP = GL.GetUniformLocation(_programId, "uMVP");
             _uniformModelMatrix = GL.GetUniformLocation(_programId, "uModelMatrix");
             _uniformNormalMatrix = GL.GetUniformLocation(_programId, "uNormalMatrix");
+            _uniformColor = GL.GetUniformLocation(_programId, "uColor");
 
             GL.UseProgram(_programId);
         }
@@ -71,6 +73,7 @@ namespace BulletTest
             GL.UniformMatrix4(_uniformMVP, false, ref mvp);
             GL.UniformMatrix4(_uniformModelMatrix, false, ref g.ModelMatrix);
             GL.UniformMatrix4(_uniformNormalMatrix, false, ref g.NormalMatrix);
+            GL.Uniform3(_uniformColor, ref g.Color);
 
             GL.BindVertexArray(PrimitiveCube.VAO);
             GL.DrawArrays(PrimitiveType.Triangles, 0, PrimitiveCube.VertexCount);

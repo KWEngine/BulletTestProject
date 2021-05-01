@@ -12,13 +12,17 @@ namespace BulletTest
         public Quaternion Rotation = Quaternion.Identity;
         public Vector3 Scale = new Vector3(1, 1, 1);
         public Matrix4 NormalMatrix = Matrix4.Identity;
+        public Vector3 Color = new Vector3(1, 1, 1);
         
         public void SetPosition(float x, float y, float z)
         {
-            Position.X = x;
-            Position.Y = y;
-            Position.Z = z;
+            Position = new Vector3(x, y, z);
+            UpdateModelMatrix();
+        }
 
+        public void SetScale(float x, float y, float z)
+        {
+            Scale = new Vector3(MathHelper.Max(x, float.Epsilon), MathHelper.Max(y, float.Epsilon), MathHelper.Max(z, float.Epsilon));
             UpdateModelMatrix();
         }
 
