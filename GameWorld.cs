@@ -28,25 +28,18 @@ namespace BulletTest
         public void Add(GameObject g)
         {
             _gameObjects.Add(g);
-            g.SetWorld(this);
+            //g.SetWorld(this);
             _collisionWorld.AddCollisionObject(g.GetRigidBody());
         }
 
         public void Delete(GameObject g)
         {
-            
             _gameObjects.Remove(g);
-            g.SetWorld(null);
         }
 
         public List<GameObject> GetGameObjects()
         {
             return _gameObjects;
-        }
-
-        public void Update()
-        {
-            _collisionWorld.StepSimulation(_currentWindow.TimeStep);
         }
     }
 }

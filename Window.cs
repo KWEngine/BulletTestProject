@@ -14,7 +14,7 @@ namespace BulletTest
         private Matrix4 _viewMatrix = Matrix4.LookAt(10, 10, 10, 0, 0, 0, 0, 1, 0);
         private Matrix4 _projectionMatrix = Matrix4.Identity;
         private Matrix4 _viewProjectionMatrix = Matrix4.Identity;
-
+        private ulong _frameCounter = 0;
         private static GameWorld _world;
 
         public static GameWorld GetCurrentWorld()
@@ -34,7 +34,6 @@ namespace BulletTest
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) 
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            Console.WriteLine("Window()");
              _world = new GameWorld(this);
         }
 
@@ -46,7 +45,6 @@ namespace BulletTest
         protected override void OnLoad()
         {
             base.OnLoad();
-            Console.WriteLine("OnLoad()");
 
             PrimitiveCube.Init();
             Renderer.Init();
@@ -88,6 +86,12 @@ namespace BulletTest
         {
             base.OnRenderFrame(args);
 
+            _frameCounter++;
+            if (_frameCounter % 60 == 0)
+            {
+                Title = "Bullet test project: " + Math.Round(1000f / _timestep, 1) + " fps";
+            }
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             List<GameObject> gameObjects = _world.GetGameObjects();
@@ -98,6 +102,8 @@ namespace BulletTest
             }
 
             SwapBuffers();
+
+            
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -137,6 +143,7 @@ namespace BulletTest
                 }
             }
             */
+            
         }
     }
 }
