@@ -23,7 +23,7 @@ namespace BulletTest
         {
             _type = type;
             if (type == CollisionShapeType.Cube)
-                _shape = new BoxShape(0.5f, 0.5f, 0.5f);
+                _shape = new BoxShape(0.5f);
             else if (type == CollisionShapeType.Sphere)
                 _shape = new SphereShape(0.5f);
             else
@@ -31,6 +31,7 @@ namespace BulletTest
             //TODO: Add Custom...
 
             _shapeRigidConstructionInfo = new RigidBodyConstructionInfo(0f, new DefaultMotionState(), _shape);
+            _shapeRigidConstructionInfo.AngularSleepingThreshold = 0f;
             _rigidBody = new RigidBody(_shapeRigidConstructionInfo);
         }
 
@@ -39,6 +40,7 @@ namespace BulletTest
         public void SetMass(float m)
         {
             _rigidBody.SetMassProps(m, new BulletSharp.Math.Vector3(0, 0, 0));
+            _rigidBody.CollisionShape.CalculateLocalInertia(m);
         }
 
         public void SetPosition(float x, float y, float z)
@@ -50,7 +52,6 @@ namespace BulletTest
         {
             _rigidBody.CollisionShape.LocalScaling = new BulletSharp.Math.Vector3(MathHelper.Max(x, float.Epsilon), MathHelper.Max(y, float.Epsilon), MathHelper.Max(z, float.Epsilon));
             DiscreteDynamicsWorld dw = Window.GetCurrentWorld().GetCollisionWorld();
-            _rigidBody.Activate();
             dw.UpdateAabbs();
         }
         

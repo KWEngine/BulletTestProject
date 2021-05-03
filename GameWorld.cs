@@ -17,7 +17,7 @@ namespace BulletTest
         public GameWorld(Window w)
         {
             _currentWindow = w;
-            _collisionWorld = new DiscreteDynamicsWorld(_colDispatcher, _broadphase, _physicsSolver, CollisionGlobals.colConfiguration);
+            _collisionWorld = new DiscreteDynamicsWorld(_colDispatcher, _broadphase, null, CollisionGlobals.colConfiguration);
         }
 
         public DiscreteDynamicsWorld GetCollisionWorld()

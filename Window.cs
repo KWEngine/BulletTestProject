@@ -17,7 +17,7 @@ namespace BulletTest
         private ulong _frameCounter = 0;
         private static GameWorld _world;
         private static Window _window;
-        private const float TIMESTEP_FIXED = 1f / 60f;
+        private const float TIMESTEP_FIXED = 1000f / 60f;
 
         public float DeltaTimeFactor
         {
