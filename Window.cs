@@ -11,15 +11,30 @@ namespace BulletTest
 {
     class Window : GameWindow
     {
-        private Matrix4 _viewMatrix = Matrix4.LookAt(10, 10, 10, 0, 0, 0, 0, 1, 0);
+        private Matrix4 _viewMatrix = Matrix4.LookAt(0, 10, 10, 0, 0, 0, 0, 1, 0);
         private Matrix4 _projectionMatrix = Matrix4.Identity;
         private Matrix4 _viewProjectionMatrix = Matrix4.Identity;
         private ulong _frameCounter = 0;
         private static GameWorld _world;
+        private static Window _window;
+        private const float TIMESTEP_FIXED = 1f / 60f;
+
+        public float DeltaTimeFactor
+        {
+            get
+            {
+                return _timestep / TIMESTEP_FIXED;
+            }
+        }
 
         public static GameWorld GetCurrentWorld()
         {
             return _world;
+        }
+
+        public static Window GetCurrentWindow()
+        {
+            return _window;
         }
 
         private float _timestep = 16.666666f;
@@ -34,7 +49,8 @@ namespace BulletTest
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) 
             : base(gameWindowSettings, nativeWindowSettings)
         {
-             _world = new GameWorld(this);
+            _window = this;
+            _world = new GameWorld(this);
         }
 
         protected override void OnFocusedChanged(FocusedChangedEventArgs e)
@@ -55,25 +71,25 @@ namespace BulletTest
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0, 0, 0, 1);
 
-            GameObject cube1 = new GameObject(CollisionShapeType.Cube);
+            Immovable cube1 = new Immovable(CollisionShapeType.Cube);
             cube1.SetPosition(5, 5, 5);
             cube1.Color = new Vector3(1, 0, 0);
             cube1.SetMass(0.5f);
             _world.Add(cube1);
 
-            GameObject cube2 = new GameObject(CollisionShapeType.Cube);
+            Immovable cube2 = new Immovable(CollisionShapeType.Cube);
             cube2.SetPosition(5, 5, 0);
             cube2.Color = new Vector3(0, 1, 0);
             cube2.SetMass(0.5f);
             _world.Add(cube2);
 
-            GameObject cube3 = new GameObject(CollisionShapeType.Cube);
+            Player cube3 = new Player(CollisionShapeType.Cube);
             cube3.SetPosition(0, 0.5f, 5);
             cube3.Color = new Vector3(0, 0, 1);
             cube3.SetMass(0.5f);
             _world.Add(cube3);
 
-            GameObject floor = new GameObject(CollisionShapeType.Cube);
+            Immovable floor = new Immovable(CollisionShapeType.Cube);
             floor.SetPosition(0, -0.5f, 0);
             floor.SetScale(50, 1, 50);
             floor.Color = new Vector3(1, 1, 1);
@@ -118,6 +134,12 @@ namespace BulletTest
         {
             base.OnUpdateFrame(args);
             _timestep = (float)args.Time;
+
+            foreach(GameObject g in _world.GetGameObjects())
+            {
+                g.Update(KeyboardState, MouseState);
+            }
+
             _world.GetCollisionWorld().StepSimulation(_timestep);
 
             /*

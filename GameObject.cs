@@ -1,5 +1,6 @@
 ﻿using BulletSharp;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace BulletTest
 {
-    class GameObject
+    abstract class GameObject
     {
         public Matrix4 ModelMatrix = Matrix4.Identity;
         public Matrix4 NormalMatrix = Matrix4.Identity;
@@ -32,6 +33,8 @@ namespace BulletTest
             _shapeRigidConstructionInfo = new RigidBodyConstructionInfo(0f, new DefaultMotionState(), _shape);
             _rigidBody = new RigidBody(_shapeRigidConstructionInfo);
         }
+
+        public abstract void Update(KeyboardState ks, MouseState ms);
 
         public void SetMass(float m)
         {
