@@ -5,6 +5,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace BulletTest
@@ -23,6 +24,7 @@ namespace BulletTest
         {
             get
             {
+                Debug.WriteLine(_timestep / TIMESTEP_FIXED);
                 return _timestep / TIMESTEP_FIXED;
             }
         }
@@ -74,26 +76,26 @@ namespace BulletTest
             Immovable cube1 = new Immovable(CollisionShapeType.Cube);
             cube1.SetPosition(5, 5, 5);
             cube1.Color = new Vector3(1, 0, 0);
-            cube1.SetMass(0.5f);
+            //cube1.SetMass(0.5f, 1);
             _world.Add(cube1);
 
             Immovable cube2 = new Immovable(CollisionShapeType.Cube);
             cube2.SetPosition(5, 5, 0);
             cube2.Color = new Vector3(0, 1, 0);
-            cube2.SetMass(0.5f);
+            //cube2.SetMass(0.5f, 1);
             _world.Add(cube2);
 
             Player cube3 = new Player(CollisionShapeType.Cube);
             cube3.SetPosition(0, 0.5f, 5);
             cube3.Color = new Vector3(0, 0, 1);
-            cube3.SetMass(0.5f);
+            //cube3.SetMass(0.5f, 0);
             _world.Add(cube3);
 
             Immovable floor = new Immovable(CollisionShapeType.Cube);
             floor.SetPosition(0, -0.5f, 0);
             floor.SetScale(50, 1, 50);
             floor.Color = new Vector3(1, 1, 1);
-            floor.SetMass(0);
+            //floor.SetMass(0, 0);
             _world.Add(floor);
             
         }

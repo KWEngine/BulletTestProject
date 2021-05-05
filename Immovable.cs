@@ -7,7 +7,7 @@ namespace BulletTest
 {
     class Immovable : GameObject
     {
-        public Immovable(CollisionShapeType type)
+        public Immovable(CollisionShapeType type, )
             : base(type)
         {
 
