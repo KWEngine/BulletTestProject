@@ -18,6 +18,7 @@ namespace BulletTest
             nws.Flags = OpenTK.Windowing.Common.ContextFlags.Debug;
             nws.IsFullscreen = false;
             nws.NumberOfSamples = 1;
+            nws.Size = new OpenTK.Mathematics.Vector2i(1280, 720);
             nws.Profile = OpenTK.Windowing.Common.ContextProfile.Core;
             nws.StartFocused = true;
             nws.WindowBorder = OpenTK.Windowing.Common.WindowBorder.Fixed;

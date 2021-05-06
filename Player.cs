@@ -1,6 +1,7 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace BulletTest
@@ -35,7 +36,16 @@ namespace BulletTest
                 velocity += new BulletSharp.Math.Vector3(0, 0, +1) * Window.GetCurrentWindow().DeltaTimeFactor;
             }
             velocity.Normalize();
-            GetRigidBody().LinearVelocity = velocity * 5;
+            if (velocity.LengthSquared != 0)
+            {
+                Debug.WriteLine(Window.GetCurrentWindow().DeltaTimeFactor);
+                GetRigidBody().Activate();
+                GetRigidBody().LinearVelocity = velocity * 5; // * Window.GetCurrentWindow().DeltaTimeFactor;
+            }
+            else
+            {
+                GetRigidBody().LinearVelocity = new BulletSharp.Math.Vector3(0, 0, 0); // * Window.GetCurrentWindow().DeltaTimeFactor;
+            }
 
         }
     }

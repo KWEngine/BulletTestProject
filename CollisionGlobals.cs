@@ -27,6 +27,16 @@ namespace BulletTest
                 );
         }
 
+        public static Matrix4 CreateOpenTKMatrixFromBulletMatrix(BulletSharp.Math.Matrix src)
+        {
+            return new Matrix4(
+                src.M11, src.M12, src.M13, src.M14,
+                src.M21, src.M22, src.M23, src.M24,
+                src.M31, src.M32, src.M33, src.M34,
+                src.M41, src.M42, src.M43, src.M44
+                );
+        }
+
         public static BulletSharp.Math.Matrix CreateBulletMatrixFromSRT(BulletSharp.Math.Vector3 s, BulletSharp.Math.Quaternion r, BulletSharp.Math.Vector3 t)
         {
             Matrix4 m = Matrix4.CreateFromQuaternion(new Quaternion(r.X, r.Y, r.Z, r.W));

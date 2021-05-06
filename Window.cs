@@ -18,13 +18,13 @@ namespace BulletTest
         private ulong _frameCounter = 0;
         private static GameWorld _world;
         private static Window _window;
-        private const float TIMESTEP_FIXED = 1000f / 60f;
+        private const float TIMESTEP_FIXED = 1 / 60f;
 
         public float DeltaTimeFactor
         {
             get
             {
-                Debug.WriteLine(_timestep / TIMESTEP_FIXED);
+                //Debug.WriteLine(_timestep / TIMESTEP_FIXED);
                 return _timestep / TIMESTEP_FIXED;
             }
         }
@@ -52,6 +52,7 @@ namespace BulletTest
             : base(gameWindowSettings, nativeWindowSettings)
         {
             _window = this;
+            VSync = VSyncMode.Adaptive;
             _world = new GameWorld(this);
         }
 
@@ -73,24 +74,30 @@ namespace BulletTest
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0, 0, 0, 1);
 
-            Immovable cube1 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1));
+            Immovable cube1 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1, ResponseType.TwoWay));
             cube1.SetPosition(5, 5, 5);
             cube1.Color = new Vector3(1, 0, 0);
             _world.Add(cube1);
 
-            Immovable cube2 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1));
-            cube2.SetPosition(5, 5, 0);
+
+            PhysicsSetupInfo cube2SetupInfo = new PhysicsSetupInfo(50, ResponseType.TwoWay);
+            //cube2SetupInfo.Restitution = 1;
+            //cube2SetupInfo.Inertia = new Vector3(1, 1, 1);
+            //cube2SetupInfo.Friction = 1;
+            Immovable cube2 = new Immovable(CollisionShapeType.Cube, cube2SetupInfo);
+            cube2.SetPosition(5, 10, 0);
+            cube2.SetScale(10, 20, 5);
             cube2.Color = new Vector3(0, 1, 0);
             _world.Add(cube2);
 
 
-            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1);
+            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1, ResponseType.TwoWay);
             Player cube3 = new Player(CollisionShapeType.Cube, playerPhysicsInfo);
             cube3.SetPosition(0, 0.5f, 5);
             cube3.Color = new Vector3(0, 0, 1);
             _world.Add(cube3);
 
-            Immovable floor = new Immovable(CollisionShapeType.Cube);
+            Immovable floor = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(0, ResponseType.Static));
             floor.SetPosition(0, -0.5f, 0);
             floor.SetScale(50, 1, 50);
             floor.Color = new Vector3(1, 1, 1);

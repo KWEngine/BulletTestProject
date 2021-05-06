@@ -5,21 +5,15 @@ using OpenTK.Mathematics;
 
 namespace BulletTest
 {
+    public enum ResponseType
+    {
+        TwoWay,
+        OneWay,
+        Static
+    }
+
     struct PhysicsSetupInfo
     {
-        private BulletSharp.Math.Vector3 _inertia;
-        public Vector3 Inertia
-        {
-            get
-            {
-                return new Vector3(_inertia.X, _inertia.Y, _inertia.Z);
-            }
-            set
-            {
-                _inertia = new BulletSharp.Math.Vector3(value.X, value.Y, value.Z);
-            }
-        }
-
         private float _friction;
         public float Friction
         {
@@ -59,13 +53,27 @@ namespace BulletTest
             }
         }
 
-
-        public PhysicsSetupInfo(float mass = 0)
+        private ResponseType _responseType;
+        public ResponseType ResponseType
         {
+            get
+            {
+                return _responseType;
+            }
+            set
+            {
+                _responseType = value;
+            }
+        }
+
+
+        public PhysicsSetupInfo(float mass = 0, ResponseType type = ResponseType.Static)
+        {
+            mass = MathHelper.Max(mass, 0);
             _mass = mass;
-            _inertia = new BulletSharp.Math.Vector3(1, 1, 1);
-            _friction = 1;
-            _restitution = 0;
+            _friction = 1f;
+            _restitution = 0f;
+            _responseType = type;
         }
         
     }
