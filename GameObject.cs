@@ -29,13 +29,11 @@ namespace BulletTest
             else
                 _shape = new BoxShape(0.5f);
             //TODO: Add Custom...
+
             _shapeRigidConstructionInfo = new RigidBodyConstructionInfo(0f, new DefaultMotionState(), _shape);
-            //_shapeRigidConstructionInfo.AngularSleepingThreshold = 0f;
-            //_shapeRigidConstructionInfo.AngularDamping = 0.1f;
             _shapeRigidConstructionInfo.LocalInertia = new BulletSharp.Math.Vector3(1, 1, 1);
-            //_shapeRigidConstructionInfo.LocalInertia = new BulletSharp.Math.Vector3(0,0,0);
             _rigidBody = new RigidBody(_shapeRigidConstructionInfo);
-            _rigidBody.SetMassProps(physics.Mass, physics.Inertia);
+            _rigidBody.SetMassProps(physics.Mass, new BulletSharp.Math.Vector3(physics.Inertia.X, physics.Inertia.Y, physics.Inertia.Z));
             _rigidBody.CollisionShape.CalculateLocalInertia(physics.Mass);
         }
 

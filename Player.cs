@@ -7,8 +7,8 @@ namespace BulletTest
 {
     class Player : GameObject
     {
-        public Player(CollisionShapeType type)
-            : base(type)
+        public Player(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
+            : base(type, pInfo)
         {
 //            GetRigidBody().SetDamping(0, 0);
 
@@ -35,7 +35,7 @@ namespace BulletTest
                 velocity += new BulletSharp.Math.Vector3(0, 0, +1) * Window.GetCurrentWindow().DeltaTimeFactor;
             }
             velocity.Normalize();
-            GetRigidBody().LinearVelocity = velocity;
+            GetRigidBody().LinearVelocity = velocity * 5;
 
         }
     }

@@ -12,7 +12,7 @@ namespace BulletTest
 {
     class Window : GameWindow
     {
-        private Matrix4 _viewMatrix = Matrix4.LookAt(0, 10, 10, 0, 0, 0, 0, 1, 0);
+        private Matrix4 _viewMatrix = Matrix4.LookAt(0, 25, 25, 0, 0, 0, 0, 1, 0);
         private Matrix4 _projectionMatrix = Matrix4.Identity;
         private Matrix4 _viewProjectionMatrix = Matrix4.Identity;
         private ulong _frameCounter = 0;
@@ -73,29 +73,27 @@ namespace BulletTest
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0, 0, 0, 1);
 
-            Immovable cube1 = new Immovable(CollisionShapeType.Cube);
+            Immovable cube1 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1));
             cube1.SetPosition(5, 5, 5);
             cube1.Color = new Vector3(1, 0, 0);
-            //cube1.SetMass(0.5f, 1);
             _world.Add(cube1);
 
-            Immovable cube2 = new Immovable(CollisionShapeType.Cube);
+            Immovable cube2 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1));
             cube2.SetPosition(5, 5, 0);
             cube2.Color = new Vector3(0, 1, 0);
-            //cube2.SetMass(0.5f, 1);
             _world.Add(cube2);
 
-            Player cube3 = new Player(CollisionShapeType.Cube);
+
+            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1);
+            Player cube3 = new Player(CollisionShapeType.Cube, playerPhysicsInfo);
             cube3.SetPosition(0, 0.5f, 5);
             cube3.Color = new Vector3(0, 0, 1);
-            //cube3.SetMass(0.5f, 0);
             _world.Add(cube3);
 
             Immovable floor = new Immovable(CollisionShapeType.Cube);
             floor.SetPosition(0, -0.5f, 0);
             floor.SetScale(50, 1, 50);
             floor.Color = new Vector3(1, 1, 1);
-            //floor.SetMass(0, 0);
             _world.Add(floor);
             
         }
@@ -107,7 +105,7 @@ namespace BulletTest
             _frameCounter++;
             if (_frameCounter % 60 == 0)
             {
-                Title = "Bullet test project: " + Math.Round(1000f / _timestep, 1) + " fps";
+                Title = "Bullet test project: " + Math.Round(1f / _timestep, 1) + " fps";
             }
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
