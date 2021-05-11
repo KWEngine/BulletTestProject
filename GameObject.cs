@@ -27,7 +27,7 @@ namespace BulletTest
             else if (type == CollisionShapeType.Sphere)
                 _shape = new SphereShape(0.5f);
             else
-                _shape = new BoxShape(0.5f);
+                _shape = new ConvexHullShape();
             //TODO: Add Custom...
 
             _shapeRigidConstructionInfo = new RigidBodyConstructionInfo(physics.Mass, new DefaultMotionState(), _shape);
@@ -41,13 +41,37 @@ namespace BulletTest
             _shapeRigidConstructionInfo.Restitution = physics.Restitution;
 
 
-            // AngularFactor verhindert oder begünstigt das Rotieren bei Kollisionen
-            _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.01f;
-            _shapeRigidConstructionInfo.AngularDamping = 0f;
-            _shapeRigidConstructionInfo.LinearDamping = 0f;
-            //_shapeRigidConstructionInfo.LinearSleepingThreshold = 0.9f;
+            if (physics.ResponseType == ResponseType.Player)
+            {
+                // AngularFactor verhindert oder begünstigt das Rotieren bei Kollisionen
+                _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.01f;
+                _shapeRigidConstructionInfo.AngularDamping = 1f;
+                _shapeRigidConstructionInfo.LinearDamping = 0f;
+                _shapeRigidConstructionInfo.LinearSleepingThreshold = 0.01f;
+                _shapeRigidConstructionInfo.Friction = 1f;
+                _shapeRigidConstructionInfo.RollingFriction = 1f;
+            }
+            else
+            {
+                // AngularFactor verhindert oder begünstigt das Rotieren bei Kollisionen
+                _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.1f;
+                _shapeRigidConstructionInfo.AngularDamping = 0f;
+                _shapeRigidConstructionInfo.LinearDamping = 0f;
+                _shapeRigidConstructionInfo.LinearSleepingThreshold = 0.8f;
+            }
+
+            
             _rigidBody = new RigidBody(_shapeRigidConstructionInfo);
-            _rigidBody.CollisionFlags = physics.ResponseType == ResponseType.TwoWay ? CollisionFlags.None : physics.ResponseType == ResponseType.OneWay ? CollisionFlags.KinematicObject : CollisionFlags.StaticObject;
+            _rigidBody.CollisionFlags = physics.ResponseType == ResponseType.Dynamic ? CollisionFlags.None : physics.ResponseType == ResponseType.Player ? CollisionFlags.None : CollisionFlags.StaticObject;
+            _rigidBody.SpinningFriction = physics.Friction;
+            if(physics.ResponseType == ResponseType.Player)
+            {
+                //  _rigidBody.ActivationState = ActivationState.DisableDeactivation;
+                _rigidBody.AngularFactor = new BulletSharp.Math.Vector3(0, 0.1f, 0);
+                //_rigidBody.
+            }
+
+            //_rigidBody.SetContactStiffnessAndDamping()
 
             /* Default values:
                 AngularDamping              = 0
@@ -82,7 +106,7 @@ namespace BulletTest
                 throw new Exception("Scaling not allowed after an object is added to the world.");
             }
             _rigidBody.CollisionShape.LocalScaling = new BulletSharp.Math.Vector3(MathHelper.Max(x, float.Epsilon), MathHelper.Max(y, float.Epsilon), MathHelper.Max(z, float.Epsilon));
-            //_rigidBody.LocalInertia = _rigidBody.CollisionShape.CalculateLocalInertia(_shapeRigidConstructionInfo.Mass);
+            _rigidBody.SetMassProps(_shapeRigidConstructionInfo.Mass, _rigidBody.CollisionShape.CalculateLocalInertia(_shapeRigidConstructionInfo.Mass));
             DiscreteDynamicsWorld dw = Window.GetCurrentWorld().GetCollisionWorld();
             dw.UpdateAabbs();
         }

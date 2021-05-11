@@ -7,8 +7,8 @@ namespace BulletTest
 {
     public enum ResponseType
     {
-        TwoWay,
-        OneWay,
+        Dynamic,
+        Player,
         Static
     }
 
@@ -71,7 +71,7 @@ namespace BulletTest
         {
             mass = MathHelper.Max(mass, 0);
             _mass = mass;
-            _friction = 1f;
+            _friction = MathHelper.Clamp(1f, 0, 1);
             _restitution = 0f;
             _responseType = type;
         }

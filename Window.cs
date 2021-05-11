@@ -74,13 +74,13 @@ namespace BulletTest
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0, 0, 0, 1);
 
-            Immovable cube1 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1, ResponseType.TwoWay));
+            Immovable cube1 = new Immovable(CollisionShapeType.Cube, new PhysicsSetupInfo(1, ResponseType.Dynamic));
             cube1.SetPosition(5, 5, 5);
             cube1.Color = new Vector3(1, 0, 0);
             _world.Add(cube1);
 
 
-            PhysicsSetupInfo cube2SetupInfo = new PhysicsSetupInfo(50, ResponseType.TwoWay);
+            PhysicsSetupInfo cube2SetupInfo = new PhysicsSetupInfo(50, ResponseType.Dynamic);
             //cube2SetupInfo.Restitution = 1;
             //cube2SetupInfo.Inertia = new Vector3(1, 1, 1);
             //cube2SetupInfo.Friction = 1;
@@ -91,9 +91,9 @@ namespace BulletTest
             _world.Add(cube2);
 
 
-            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1, ResponseType.TwoWay);
+            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1, ResponseType.Player);
             Player cube3 = new Player(CollisionShapeType.Cube, playerPhysicsInfo);
-            cube3.SetPosition(0, 0.5f, 5);
+            cube3.SetPosition(-10, 10f, 0);
             cube3.Color = new Vector3(0, 0, 1);
             _world.Add(cube3);
 

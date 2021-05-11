@@ -11,7 +11,6 @@ namespace BulletTest
         public Player(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
             : base(type, pInfo)
         {
-//            GetRigidBody().SetDamping(0, 0);
 
         }
 
@@ -38,13 +37,11 @@ namespace BulletTest
             velocity.Normalize();
             if (velocity.LengthSquared != 0)
             {
-                Debug.WriteLine(Window.GetCurrentWindow().DeltaTimeFactor);
-                GetRigidBody().Activate();
                 GetRigidBody().LinearVelocity = velocity * 5; // * Window.GetCurrentWindow().DeltaTimeFactor;
             }
             else
             {
-                GetRigidBody().LinearVelocity = new BulletSharp.Math.Vector3(0, 0, 0); // * Window.GetCurrentWindow().DeltaTimeFactor;
+                GetRigidBody().LinearVelocity = new BulletSharp.Math.Vector3(0, GetRigidBody().LinearVelocity.Y, 0); // * Window.GetCurrentWindow().DeltaTimeFactor;
             }
 
         }
