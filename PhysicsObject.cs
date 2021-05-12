@@ -5,10 +5,15 @@ using System.Text;
 
 namespace BulletTest
 {
-    class Immovable : GameObject
+    class PhysicsObject : GameObject
     {
-        public Immovable(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
+        public PhysicsObject(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
             : base(type, pInfo)
+        {
+
+        }
+
+        public override void OnCollision(GameObject collider)
         {
 
         }
