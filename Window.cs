@@ -74,14 +74,11 @@ namespace BulletTest
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0, 0, 0, 1);
 
-            
             PhysicsObject cube1 = new PhysicsObject(CollisionShapeType.Cube, new PhysicsSetupInfo(1, ResponseType.Static));
             cube1.SetPosition(5, 15, 2.75f);
             cube1.Color = new Vector3(1, 0, 0);
             cube1.Name = "Roter Würfel";
-            //_world.Add(cube1);
-            
-
+            _world.Add(cube1);
             
             PhysicsSetupInfo cube2SetupInfo = new PhysicsSetupInfo(50, ResponseType.Static);
             PhysicsObject cube2 = new PhysicsObject(CollisionShapeType.Cube, cube2SetupInfo);
@@ -89,15 +86,14 @@ namespace BulletTest
             cube2.SetScale(10, 10, 5);
             cube2.Name = "Grüner Würfel";
             cube2.Color = new Vector3(0, 1, 0);
-            //_world.Add(cube2);
-            
+            _world.Add(cube2);
 
-
-            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(100, ResponseType.Player);
-            //playerPhysicsInfo.Friction = 1;
-            //playerPhysicsInfo.Restitution = 0;
+            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1, ResponseType.Manual);
+            playerPhysicsInfo.Friction = 1;
+            playerPhysicsInfo.Restitution = 0;
             Player playerObject = new Player(CollisionShapeType.Cube, playerPhysicsInfo);
-            playerObject.SetPosition(-10, 5f, 0);
+            playerObject.SetScale(2, 2, 2);
+            playerObject.SetPosition(-5, 0f, 0);
             playerObject.Color = new Vector3(0, 0, 1);
             playerObject.Name = "Player";
             _world.Add(playerObject);
@@ -108,7 +104,6 @@ namespace BulletTest
             floor.Name = "Boden";
             floor.Color = new Vector3(1, 1, 1);
             _world.Add(floor);
-            
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)

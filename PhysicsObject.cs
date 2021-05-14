@@ -12,11 +12,12 @@ namespace BulletTest
         {
 
         }
-
+        /*
         public override void OnCollision(GameObject collider)
         {
 
         }
+        */
 
         public override void Update(KeyboardState ks, MouseState ms)
         {

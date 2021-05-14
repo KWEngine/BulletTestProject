@@ -7,8 +7,8 @@ namespace BulletTest
 {
     public enum ResponseType
     {
-        Dynamic,
-        Player,
+        Automatic,
+        Manual,
         Static
     }
 

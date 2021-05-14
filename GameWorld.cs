@@ -21,6 +21,7 @@ namespace BulletTest
             _currentWindow = w;
             _collisionWorld = new DiscreteDynamicsWorld(_colDispatcher, _broadphase, _physicsSolver, CollisionGlobals.colConfiguration);
             _callback = new DynamicsWorld.InternalTickCallback(NotifyCollidingObjects);
+            _collisionWorld.Broadphase.OverlappingPairCache.SetInternalGhostPairCallback(new GhostPairCallback());
         }
 
         public DiscreteDynamicsWorld GetCollisionWorld()
@@ -83,13 +84,13 @@ namespace BulletTest
                     {
                         if(a.UserObject != null && b.UserObject != null)
                         {
-                            Debug.WriteLine(a.UserObject.ToString() + " (" + a.ActivationState + ")");
-                            Debug.WriteLine(b.UserObject.ToString() + " (" + b.ActivationState + ")");
-                            Debug.WriteLine("-----------");
+                            //Debug.WriteLine(a.UserObject.ToString() + " (" + a.ActivationState + ")");
+                            //Debug.WriteLine(b.UserObject.ToString() + " (" + b.ActivationState + ")");
+                            //Debug.WriteLine("-----------");
                         }
                         else
                         {
-                            Debug.WriteLine("null: " + a.WorldTransform.Origin);
+                            //Debug.WriteLine("null: " + a.WorldTransform.Origin);
                         }
                         
 
