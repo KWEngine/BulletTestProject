@@ -45,9 +45,9 @@ namespace BulletTest
             }
             else
             {
-                _shapeRigidConstructionInfo.AngularSleepingThreshold = 1f;    // Standard: 1
-                _shapeRigidConstructionInfo.AngularDamping = 0.1f;             // Standard: 0
-                _shapeRigidConstructionInfo.LinearDamping = 0.01f;                 // Standard: 0
+                _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.01f;    // Standard: 1
+                _shapeRigidConstructionInfo.AngularDamping = 0.0f;             // Standard: 0
+                _shapeRigidConstructionInfo.LinearDamping = 0.0f;                 // Standard: 0
                 _shapeRigidConstructionInfo.LinearSleepingThreshold = 0.1f;     // Standard: 0
             }
             _shapeRigidConstructionInfo.Friction = physics.Friction;

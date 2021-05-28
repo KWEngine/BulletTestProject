@@ -98,7 +98,9 @@ namespace BulletTest
             playerObject.Name = "Player";
             _world.Add(playerObject);
 
-            CollisionBody floor = new CollisionBody(new PhysicsSetupInfo(0, CollisionShapeType.Cube, ResponseType.Static));
+            PhysicsSetupInfo floorSetupInfo = new PhysicsSetupInfo(0, CollisionShapeType.Cube, ResponseType.Static);
+            floorSetupInfo.Friction = 1f;
+            CollisionBody floor = new CollisionBody(floorSetupInfo);
             floor.SetPosition(0, -0.5f, 0);
             floor.SetScale(50, 1, 50);
             floor.Name = "Boden";

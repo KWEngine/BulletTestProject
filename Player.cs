@@ -10,7 +10,7 @@ namespace BulletTest
     
     class Player : GameObject
     {
-        private float _speed = 1f;
+        private float _speed = 5f;
 
         public Player(PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
             : base(pInfo)
