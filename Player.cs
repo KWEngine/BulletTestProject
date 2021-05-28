@@ -6,6 +6,7 @@ using System.Text;
 
 namespace BulletTest
 {
+    
     class Player : GameObject
     {
         public Player(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
