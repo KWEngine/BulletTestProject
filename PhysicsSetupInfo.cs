@@ -7,8 +7,8 @@ namespace BulletTest
 {
     public enum ResponseType
     {
-        Dynamic,
-        Player,
+        Automatic,
+        Manual,
         Static
     }
 
@@ -69,9 +69,8 @@ namespace BulletTest
 
         public PhysicsSetupInfo(float mass = 0, ResponseType type = ResponseType.Static)
         {
-            mass = MathHelper.Max(mass, 0);
-            _mass = mass;
-            _friction = MathHelper.Clamp(1f, 0, 1);
+            _mass = MathHelper.Max(mass, 0);
+            _friction = 0.49f;
             _restitution = 0f;
             _responseType = type;
         }

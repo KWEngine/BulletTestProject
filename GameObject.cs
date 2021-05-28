@@ -14,10 +14,13 @@ namespace BulletTest
         public Matrix4 NormalMatrix = Matrix4.Identity;
         public Vector3 Color = new Vector3(1, 1, 1);
 
-        protected CollisionShape _shape = null;
-        protected RigidBodyConstructionInfo _shapeRigidConstructionInfo = null;
-        protected RigidBody _rigidBody = null;
-        protected CollisionShapeType _type;
+        public string Name { get; set; } = "undefined GameObject instance";
+
+        private CollisionShape _shape = null;
+        private CollisionShapeType _type = CollisionShapeType.Cube;
+        private RigidBodyConstructionInfo _shapeRigidConstructionInfo = null;
+        private RigidBody _rigidBody = null;
+        private GhostObject _ghostObject;
 
         /*
         public GameObject()
@@ -25,37 +28,53 @@ namespace BulletTest
             
 
 
-            if (physics.ResponseType == ResponseType.Player)
+
+            // Note to self: AngularFactor verhindert oder begünstigt das Rotieren bei Kollisionen
+            
+            if (physics.ResponseType == ResponseType.Manual)
             {
-                // AngularFactor verhindert oder begünstigt das Rotieren bei Kollisionen
-                _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.01f;
-                _shapeRigidConstructionInfo.AngularDamping = 1f;
-                _shapeRigidConstructionInfo.LinearDamping = 0f;
-                _shapeRigidConstructionInfo.LinearSleepingThreshold = 0.01f;
-                _shapeRigidConstructionInfo.Friction = 1f;
-                _shapeRigidConstructionInfo.RollingFriction = 1f;
+                _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.1f;
+                _shapeRigidConstructionInfo.AngularDamping = 0.1f;
+                _shapeRigidConstructionInfo.LinearDamping = 0.0f;
+                //_shapeRigidConstructionInfo.LinearSleepingThreshold = 0.8f;
             }
             else
             {
-                // AngularFactor verhindert oder begünstigt das Rotieren bei Kollisionen
-                _shapeRigidConstructionInfo.AngularSleepingThreshold = 0.1f;
-                _shapeRigidConstructionInfo.AngularDamping = 0f;
-                _shapeRigidConstructionInfo.LinearDamping = 0f;
-                _shapeRigidConstructionInfo.LinearSleepingThreshold = 0.8f;
+                _shapeRigidConstructionInfo.AngularSleepingThreshold = 1f;    // Standard: 1
+                _shapeRigidConstructionInfo.AngularDamping = 0.0f;             // Standard: 0
+                _shapeRigidConstructionInfo.LinearDamping = 0.0f;                 // Standard: 0
+                _shapeRigidConstructionInfo.LinearSleepingThreshold = 0.8f;     // Standard: 0
             }
 
             
             _rigidBody = new RigidBody(_shapeRigidConstructionInfo);
-            _rigidBody.CollisionFlags = physics.ResponseType == ResponseType.Dynamic ? CollisionFlags.None : physics.ResponseType == ResponseType.Player ? CollisionFlags.None : CollisionFlags.StaticObject;
             _rigidBody.SpinningFriction = physics.Friction;
-            if(physics.ResponseType == ResponseType.Player)
+
+            if(physics.ResponseType == ResponseType.Manual)
             {
-                //  _rigidBody.ActivationState = ActivationState.DisableDeactivation;
-                _rigidBody.AngularFactor = new BulletSharp.Math.Vector3(0, 0.1f, 0);
-                //_rigidBody.
+                _rigidBody.AngularFactor = new BulletSharp.Math.Vector3(0, 0, 0);
+                _rigidBody.ActivationState = ActivationState.ActiveTag | ActivationState.DisableDeactivation;
+                _rigidBody.CollisionFlags = CollisionFlags.CharacterObject | CollisionFlags.KinematicObject;
+                //_rigidBody.DeactivationTime = -1;
+
+                
+                _ghostObject = new GhostObject();
+                _ghostObject.CollisionShape = _shape;
+                _ghostObject.WorldTransform = _rigidBody.WorldTransform;
+                
+                
+                
+            }
+            else if(physics.ResponseType == ResponseType.Automatic)
+            {
+                
+            }
+            else if(physics.ResponseType == ResponseType.Static)
+            {
+
             }
 
-            //_rigidBody.SetContactStiffnessAndDamping()
+            _rigidBody.UserObject = this;
 
            
         }
@@ -66,7 +85,77 @@ namespace BulletTest
         /*
         public void SetPosition(float x, float y, float z)
         {
-            _rigidBody.Translate(new BulletSharp.Math.Vector3(x, y, z));
+            BulletSharp.Math.Matrix t = _rigidBody.MotionState.WorldTransform;
+            t.Origin = new BulletSharp.Math.Vector3(x, y, z);
+            _rigidBody.MotionState.WorldTransform = t;
+            _rigidBody.CenterOfMassTransform = t;
+        }
+
+        public void SetPositionKinematic(float x, float y, float z)
+        {
+            BulletSharp.Math.Matrix newTransform = _rigidBody.MotionState.WorldTransform;
+            newTransform.Origin = new BulletSharp.Math.Vector3(x, y, z);
+            _rigidBody.MotionState.WorldTransform = newTransform;
+
+            if(HasGhostObject)
+            {
+                _ghostObject.WorldTransform = newTransform;
+                Debug.WriteLine(_ghostObject.WorldTransform.Origin);
+            }
+        }
+
+        public void MoveOffset(float x, float y, float z)
+        {
+            if (x != 0 || y != 0 || z != 0)
+            {
+
+
+                _rigidBody.Activate(true);
+
+                /*
+                BulletSharp.Math.Matrix t = _rigidBody.MotionState.WorldTransform;
+                t.Origin = t.Origin + new BulletSharp.Math.Vector3(x, y, z);
+                _rigidBody.MotionState.WorldTransform = t;
+                _rigidBody.CenterOfMassTransform = t;
+                */
+
+                //_rigidBody.Translate(_rigidBody.WorldTransform.Origin + new BulletSharp.Math.Vector3(x, y, z));
+                //_rigidBody.ApplyCentralImpulse(new BulletSharp.Math.Vector3(x, y, z));
+                //_rigidBody.ApplyCentralForce(new BulletSharp.Math.Vector3(x,y,z));
+                _rigidBody.LinearVelocity = (new BulletSharp.Math.Vector3(x, y, z));
+                //_rigidBody.Translate(_rigidBody.WorldTransform.Origin + new BulletSharp.Math.Vector3(x, y, z));
+            }
+            else
+            {
+                //_rigidBody.LinearVelocity = (new BulletSharp.Math.Vector3(x, y, z));
+            }
+        }
+
+        public void MoveKinematic(float x, float y, float z)
+        {
+            //            btTransform newTrans;
+            BulletSharp.Math.Matrix newTransform = _rigidBody.MotionState.WorldTransform;
+            newTransform.Origin += new BulletSharp.Math.Vector3(
+                x * Window.GetCurrentWindow().DeltaTimeFactor, 
+                y * Window.GetCurrentWindow().DeltaTimeFactor, 
+                z * Window.GetCurrentWindow().DeltaTimeFactor
+                );
+            _rigidBody.MotionState.WorldTransform = newTransform;
+            /*_rigidBody.LinearVelocity = new BulletSharp.Math.Vector3(
+                x * Window.GetCurrentWindow().DeltaTimeFactor,
+                y * Window.GetCurrentWindow().DeltaTimeFactor,
+                z * Window.GetCurrentWindow().DeltaTimeFactor
+                );*/
+
+            if (HasGhostObject)
+            {
+                _ghostObject.WorldTransform = newTransform;
+                //Debug.WriteLine(_ghostObject.WorldTransform.Origin);
+            }
+
+            //            body->getMotionState()->getWorldTransform(newTrans);
+            //            newTrans.getOrigin() += btVector3(0, 0.02, 0);
+            //            body->getMotionState()->setWorldTransform(newTrans);
         }
         */
 
@@ -78,6 +167,12 @@ namespace BulletTest
             }
             _rigidBody.CollisionShape.LocalScaling = new BulletSharp.Math.Vector3(MathHelper.Max(x, float.Epsilon), MathHelper.Max(y, float.Epsilon), MathHelper.Max(z, float.Epsilon));
             _rigidBody.SetMassProps(_shapeRigidConstructionInfo.Mass, _rigidBody.CollisionShape.CalculateLocalInertia(_shapeRigidConstructionInfo.Mass));
+
+            if (HasGhostObject)
+            {
+                _ghostObject.CollisionShape.LocalScaling = new BulletSharp.Math.Vector3(MathHelper.Max(x, float.Epsilon), MathHelper.Max(y, float.Epsilon), MathHelper.Max(z, float.Epsilon));
+            }
+
             DiscreteDynamicsWorld dw = Window.GetCurrentWorld().GetCollisionWorld();
             dw.UpdateAabbs();
         }
@@ -93,5 +188,25 @@ namespace BulletTest
         {
             return _rigidBody;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public bool HasGhostObject
+        {
+            get
+            {
+                return _ghostObject != null;
+            }
+        }
+
+        public GhostObject GetGhostObject()
+        {
+            return _ghostObject;
+        }
+
+        //public abstract void OnCollision(GameObject collider);
     }
 }
