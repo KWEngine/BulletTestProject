@@ -6,12 +6,7 @@ using System.Text;
 
 namespace BulletTest
 {
-    public enum CollisionShapeType
-    {
-        Cube,
-        Sphere,
-        Custom
-    }
+    
 
     static class CollisionGlobals
     {

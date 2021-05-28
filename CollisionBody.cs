@@ -5,19 +5,13 @@ using System.Text;
 
 namespace BulletTest
 {
-    class PhysicsObject : GameObject
+    class CollisionBody : GameObject
     {
-        public PhysicsObject(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
-            : base(type, pInfo)
+        public CollisionBody(PhysicsSetupInfo pInfo)
+            : base(pInfo)
         {
 
         }
-        /*
-        public override void OnCollision(GameObject collider)
-        {
-
-        }
-        */
 
         public override void Update(KeyboardState ks, MouseState ms)
         {

@@ -12,7 +12,14 @@ namespace BulletTest
         Static
     }
 
-    struct PhysicsSetupInfo
+    public enum CollisionShapeType
+    {
+        Cube,
+        Sphere,
+        Custom
+    }
+
+    public struct PhysicsSetupInfo
     {
         private float _friction;
         public float Friction
@@ -66,13 +73,26 @@ namespace BulletTest
             }
         }
 
+        private CollisionShapeType _shapeType;
+        public CollisionShapeType CollisionShape
+        {
+            get
+            {
+                return _shapeType;
+            }
+            set
+            {
+                _shapeType = value;
+            }
+        }
 
-        public PhysicsSetupInfo(float mass = 0, ResponseType type = ResponseType.Static)
+        public PhysicsSetupInfo(float mass = 0, CollisionShapeType shape = CollisionShapeType.Cube, ResponseType type = ResponseType.Static)
         {
             _mass = MathHelper.Max(mass, 0);
             _friction = 0.49f;
-            _restitution = 0f;
+            _restitution = 0.0f;
             _responseType = type;
+            _shapeType = shape;
         }
         
     }

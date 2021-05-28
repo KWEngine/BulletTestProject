@@ -10,10 +10,10 @@ namespace BulletTest
     
     class Player : GameObject
     {
-        private float _speed = 0.2f;
+        private float _speed = 1f;
 
-        public Player(CollisionShapeType type, PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
-            : base(type, pInfo)
+        public Player(PhysicsSetupInfo pInfo = new PhysicsSetupInfo())
+            : base(pInfo)
         {
 
         }
@@ -53,7 +53,7 @@ namespace BulletTest
                 velocity += new BulletSharp.Math.Vector3(0, +_speed, 0);// * Window.GetCurrentWindow().DeltaTimeFactor;
             }
 
-            MoveKinematic(velocity.X, velocity.Y, velocity.Z);
+            MoveOffset(velocity.X, velocity.Y, velocity.Z);
             /*if (velocity.LengthSquared != 0)
             {
                 GetRigidBody().LinearVelocity = velocity * 5; // * Window.GetCurrentWindow().DeltaTimeFactor;
@@ -67,7 +67,7 @@ namespace BulletTest
             //Window.GetCurrentWorld().GetCollisionWorld().ContactTest(this.GetRigidBody(), )
             //GetRigidBody().
 
-            
+            /*
             if(HasGhostObject)
             {
                 
@@ -86,7 +86,7 @@ namespace BulletTest
                     }
                 }
             }
-            
+            */
 
             //Window.GetCurrentWorld().GetCollisionWorld().
         }

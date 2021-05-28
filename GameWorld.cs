@@ -34,10 +34,11 @@ namespace BulletTest
             _gameObjects.Add(g);
             //g.SetWorld(this);
             _collisionWorld.AddRigidBody(g.GetRigidBody());
-            if(g.HasGhostObject)
+            /*if(g.HasGhostObject)
             {
                 _collisionWorld.AddCollisionObject(g.GetGhostObject());
             }
+            */
             /*
             if(g.GetRigidBody().IsKinematicObject)
             {

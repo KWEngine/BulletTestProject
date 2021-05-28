@@ -74,31 +74,31 @@ namespace BulletTest
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0, 0, 0, 1);
 
-            PhysicsObject cube1 = new PhysicsObject(CollisionShapeType.Cube, new PhysicsSetupInfo(1, ResponseType.Static));
-            cube1.SetPosition(5, 15, 2.75f);
+            CollisionBody cube1 = new CollisionBody(new PhysicsSetupInfo(1, CollisionShapeType.Cube, ResponseType.Automatic));
+            cube1.SetPosition(5, 15, 2.8f);
             cube1.Color = new Vector3(1, 0, 0);
-            cube1.Name = "Roter Würfel";
+            cube1.Name = "Roter Würfel (Player)";
             _world.Add(cube1);
             
-            PhysicsSetupInfo cube2SetupInfo = new PhysicsSetupInfo(50, ResponseType.Static);
-            PhysicsObject cube2 = new PhysicsObject(CollisionShapeType.Cube, cube2SetupInfo);
+            PhysicsSetupInfo cube2SetupInfo = new PhysicsSetupInfo(50, CollisionShapeType.Cube, ResponseType.Automatic);
+            CollisionBody cube2 = new CollisionBody(cube2SetupInfo);
             cube2.SetPosition(5, 5, 0);
             cube2.SetScale(10, 10, 5);
             cube2.Name = "Grüner Würfel";
             cube2.Color = new Vector3(0, 1, 0);
             _world.Add(cube2);
 
-            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(1, ResponseType.Manual);
+            PhysicsSetupInfo playerPhysicsInfo = new PhysicsSetupInfo(5000, CollisionShapeType.Cube, ResponseType.Manual);
             playerPhysicsInfo.Friction = 1;
             playerPhysicsInfo.Restitution = 0;
-            Player playerObject = new Player(CollisionShapeType.Cube, playerPhysicsInfo);
+            Player playerObject = new Player(playerPhysicsInfo);
             playerObject.SetScale(2, 2, 2);
             playerObject.SetPosition(-5, 0f, 0);
             playerObject.Color = new Vector3(0, 0, 1);
             playerObject.Name = "Player";
             _world.Add(playerObject);
 
-            PhysicsObject floor = new PhysicsObject(CollisionShapeType.Cube, new PhysicsSetupInfo(0, ResponseType.Static));
+            CollisionBody floor = new CollisionBody(new PhysicsSetupInfo(0, CollisionShapeType.Cube, ResponseType.Static));
             floor.SetPosition(0, -0.5f, 0);
             floor.SetScale(50, 1, 50);
             floor.Name = "Boden";
